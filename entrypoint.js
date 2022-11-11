@@ -41,23 +41,26 @@ function countdown(timeout) {
 }
 
 class EasterEgg {
-	constructor() {
-		/**
-		 * @type State
-		 */
-		this._state = 'init'
+	/**
+	 * @param {State} state
+	 */
+	constructor(state = 'init') {
 		/**
 		 * @todo ensure that this type throws error when it doesn't contain all State types.
 		 * @type State[]
 		 */
 		this._states = ['init', 'step1', 'step2', 'final'];
-		this.state = this._state;
+		this._state = state;
+		this.state = state;
 	}
 
 	/**
 	 * @param {State} state
 	 */
 	set state(state) {
+		/**
+		 * @type State
+		 */
 		this._state = state;
 		this._update();
 	}
@@ -83,6 +86,9 @@ class EasterEgg {
 		});
 	}
 
+	/**
+	 * Inital Step
+	 */
 	_init() {
 		if (this._state === 'init') {
 			// add an event listener for hovering jobs.
@@ -96,9 +102,14 @@ class EasterEgg {
 		}
 		else {
 			// run cleanup
+			this._jobsLink?.removeEventListener('mouseenter', this._jobsLinkStartCountdown.bind(this));
+			this._jobsLink?.removeEventListener('focusin', this._jobsLinkStartCountdown.bind(this));
+			this._jobsLink?.removeEventListener('mouseleave', this._jobsLinkResetCountdown.bind(this));
+			this._jobsLink?.removeEventListener('focusout', this._jobsLinkResetCountdown.bind(this));
 		}
 	}
-	_jobsLinkStartCountdown(e) {
+
+	_jobsLinkStartCountdown() {
 		this._jobsLinkCountdown = countdown(3);
 		this._jobsLinkCountdown.promise
 			.then(res => {
@@ -106,13 +117,48 @@ class EasterEgg {
 			})
 			.catch(err => console.log(err.message));
 	}
+
 	_jobsLinkResetCountdown(e) {
 		this._jobsLinkCountdown?.cancel?.apply(undefined, ['Easter Egg Cancelled!']);
 	}
 
+	/**
+	 * Step 1
+	 */
 	_step1() {
 		console.log('starting step 1');
+		// Start the animation for the hat.
+		// wait for the footer to become available
+		customElements.whenDefined('rh-global-footer')
+			.then(async () => {
+				const footer = document.querySelector('rh-global-footer');
+				// @ts-ignore
+				await footer.updateComplete;
+				const footerSVG = footer?.shadowRoot?.querySelector('svg');
+				footerSVG?.animate(
+					[
+						{ transform: 'rotate(0)' },
+						{ transform: 'rotate(25deg)' },
+						{ transform: 'rotate(-25deg)' },
+						{ transform: 'rotate(0)' },
+						{ transform: 'rotate(8deg)' },
+						{ transform: 'rotate(-3deg)' },
+						{ transform: 'rotate(0)' },
+					],
+					{
+						duration: 2000
+					}
+				);
+			});
+
+
+		// Inject stuff into the source.
+		// Start the watcher for monitoring the color.
 	}
+
+	/**
+	 * Step 2
+	 */
 	_step2() {
 		console.log('starting step 2');
 	}
@@ -137,7 +183,7 @@ class EasterEgg {
 	}
 }
 
-console.log('hi');
-const easterEgg = new EasterEgg();
+// @ts-ignore
+const easterEgg = new EasterEgg('step1');
 // @ts-ignore
 window.easterEgg = easterEgg;

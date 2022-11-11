@@ -1,0 +1,13 @@
+{
+  "name": "code-name-easter-egg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "entrypoint.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "spandx": "^2.2.5"
+  }
+}

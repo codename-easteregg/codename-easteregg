@@ -20,7 +20,7 @@ async function injectLocalSources(_req, res, next) {
         chunk = chunk
           .replace('</head>', `
 <link href="/src/lightdom.css" rel="stylesheet">
-<script type="module" src="/entrypoint.js"></script>
+<script type="module" src="/src/entrypoint.js"></script>
 `);
         // .replace('</body>', `${generateRhFooterTemplate()}</body>`);
 
@@ -45,8 +45,7 @@ module.exports = {
   startPath: '/',
   verbose: false,
   routes: {
-    '/entrypoint.js': './entrypoint.js',
-    '/lightdom.css': './lightdom.css',
+    '/en/src/': './src/',
     '/en': {
       host: 'https://www.redhat.com'
     },

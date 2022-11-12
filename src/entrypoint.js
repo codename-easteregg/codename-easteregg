@@ -12,7 +12,7 @@ const HOVER_EVENTS = new Map([
 ]);
 
 /**
- * @typedef {'init' | 'step1' | 'step2' | 'final' } State
+ * @typedef {'init' | 'step1' | 'final' } State
  */
 class EasterEgg {
 	/**
@@ -23,7 +23,7 @@ class EasterEgg {
 		 * @todo ensure that this type throws error when it doesn't contain all State types.
 		 * @type {State[]}
 		 */
-		this._states = ['init', 'step1', 'step2', 'final'];
+		this._states = ['init', 'step1', 'final'];
 		this._state = state;
 		this.state = state;
 		this._cookieDomain = cookieDomain;
@@ -121,18 +121,10 @@ class EasterEgg {
 		console.log('step1 cleanup');
 	}
 
-	/**
-	 * Step 2
-	 */
-	async _step2() {
-		console.log('starting step 2');
-		setVerificationCookie(this._cookieDomain);
-		await animateSVG('pop');
-		// shootConfetti();
-	}
-
-	_final() {
+	async _final() {
 		console.log('entered final state');
+		await animateSVG('pop');
+		setVerificationCookie(this._cookieDomain);
 	}
 
 	/**
@@ -168,6 +160,6 @@ class EasterEgg {
 }
 
 // @ts-ignore
-const easterEgg = new EasterEgg('step2');
+const easterEgg = new EasterEgg('final');
 // @ts-ignore
 window.easterEgg = easterEgg;

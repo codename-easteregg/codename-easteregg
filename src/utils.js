@@ -155,3 +155,37 @@ export async function shootConfetti() {
 	await import('https://unpkg.com/lit-confetti/dist/esm/index.js?module')
 	document.body.insertAdjacentHTML('beforeend', `<lit-confetti gravity="1" count="40"></lit-confetti>`)
 }
+
+export async function startEndScreen() {
+	// get collapse all body
+	const body = document.querySelector('#main-content');
+	const footer = document.querySelector('rh-footer');
+	const globalFooter = document.querySelector('rh-global-footer');
+	// @ts-ignore
+	const collapseAnimation = ({ start, end }) => [
+		[
+			{ maxHeight: start },
+			{ maxHeight: end },
+		],
+		{
+			duration: 1000,
+			fill: 'forwards'
+		}
+	];
+	// @ts-ignore
+	footer?.parentElement?.appendChild(globalFooter);
+	globalFooter?.removeAttribute('slot');
+	// @ts-ignore
+	body?.style.setProperty('overflow', 'hidden');
+	// @ts-ignore
+	footer?.style.setProperty('overflow', 'hidden');
+	// @ts-ignore
+	body?.animate(...collapseAnimation({ start: '100vh', end: '0px' }));
+	// @ts-ignore
+	footer?.animate(...collapseAnimation({ start: '100vh', end: '95px' }));
+	// fade out content
+}
+
+setTimeout(() => {
+	startEndScreen();
+}, 2000)

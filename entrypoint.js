@@ -40,6 +40,83 @@ function countdown(timeout) {
 	return ret;
 }
 
+/**
+ * Promised based countdown timer.
+ * @param {HTMLElement | SVGSVGElement} el - Specified time to resolve the countdown specified in seconds.
+ * @returns {{ cancel?: (string) => void, promise: Promise<void>}}
+ */
+function styleMonitor(el) {
+	const ret = {};
+	const signal = new Promise((res, rej) => {
+		ret.cancel = (err) => {
+			rej(new Error(err));
+		}
+	});
+
+	/**
+	 * @type {Promise<void>}
+	 */
+	ret.promise = new Promise((res, rej) => {
+		console.log('Waiting for color fix.');
+		const interval = setInterval(() => {
+			const computedStyle = window.getComputedStyle(el);
+			// check the correct fill color of the svg
+			if (computedStyle.fill === 'rgb(238, 0, 0)') {
+				res();
+				clearInterval(interval);
+			}
+		}, 1000);
+
+		signal.catch(err => {
+			rej(err);
+			clearInterval(interval);
+		})
+	});
+
+	return ret;
+}
+
+function animateSVG(animation) {
+	// wait for the footer to become available
+	customElements.whenDefined('rh-global-footer')
+		.then(async () => {
+			const footer = document.querySelector('rh-global-footer');
+			// @ts-ignore
+			await footer.updateComplete;
+			const footerSVG = footer?.shadowRoot?.querySelector('svg');
+			if (animation === 'wiggle') {
+				footerSVG?.animate(
+					[
+						{ transform: 'rotate(0)' },
+						{ transform: 'rotate(15deg)' },
+						{ transform: 'rotate(-11deg)' },
+						{ transform: 'rotate(0)' },
+						{ transform: 'rotate(8deg)' },
+						{ transform: 'rotate(-3deg)' },
+						{ transform: 'rotate(0)' },
+					],
+					{
+						duration: 2000,
+						easing: 'cubic-bezier(0.42, 0, 0.58, 1)'
+					}
+				);
+			}
+			else if (animation === 'pop') {
+				footerSVG?.animate(
+					[
+						{ transform: 'rotate(0)' },
+						{ transform: 'translateX(-50%)' },
+						{ transform: 'rotate(0)' },
+					],
+					{
+						duration: 1000,
+						easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+					}
+				);
+			}
+		});
+}
+
 class EasterEgg {
 	/**
 	 * @param {State} state
@@ -125,35 +202,20 @@ class EasterEgg {
 	/**
 	 * Step 1
 	 */
-	_step1() {
+	async _step1() {
 		console.log('starting step 1');
 		// Start the animation for the hat.
-		// wait for the footer to become available
-		customElements.whenDefined('rh-global-footer')
-			.then(async () => {
-				const footer = document.querySelector('rh-global-footer');
-				// @ts-ignore
-				await footer.updateComplete;
-				const footerSVG = footer?.shadowRoot?.querySelector('svg');
-				footerSVG?.animate(
-					[
-						{ transform: 'rotate(0)' },
-						{ transform: 'rotate(25deg)' },
-						{ transform: 'rotate(-25deg)' },
-						{ transform: 'rotate(0)' },
-						{ transform: 'rotate(8deg)' },
-						{ transform: 'rotate(-3deg)' },
-						{ transform: 'rotate(0)' },
-					],
-					{
-						duration: 2000
-					}
-				);
-			});
-
-
+		this._animateSVG('wiggle');
 		// Inject stuff into the source.
+		this._renderHintMarkup();
 		// Start the watcher for monitoring the color.
+		const svg = await this._footerSVG;
+		if (svg) {
+			styleMonitor(svg).promise.then(() => {
+				this._animateSVG('pop');
+				this.nextStep();
+			}).catch(() => { });
+		}
 	}
 
 	/**
@@ -181,9 +243,77 @@ class EasterEgg {
 	get _nextState() {
 		return this._states[this._states.indexOf(this._state) + 1];
 	}
+
+	/**
+	 * @typedef {'wiggle' | 'pop'} SVGAnimation
+	 * @param {SVGAnimation} animation
+	 * @return
+	 **/
+	async _animateSVG(animation) {
+		// wait for the footer to become available
+		const svg = await this._footerSVG;
+		if (animation === 'wiggle') {
+			svg?.animate(
+				[
+					{ transform: 'rotate(0)' },
+					{ transform: 'rotate(15deg)' },
+					{ transform: 'rotate(-11deg)' },
+					{ transform: 'rotate(0)' },
+					{ transform: 'rotate(8deg)' },
+					{ transform: 'rotate(-3deg)' },
+					{ transform: 'rotate(0)' },
+				],
+				{
+					duration: 2000,
+					easing: 'cubic-bezier(0.42, 0, 0.58, 1)'
+				}
+			);
+		}
+		else if (animation === 'pop') {
+			svg?.animate(
+				[
+					{ transform: 'rotate(0)' },
+					{ transform: 'translateY(-50%)' },
+					{ transform: 'rotate(0)' },
+				],
+				{
+					duration: 1000,
+					easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+				}
+			);
+		}
+	}
+
+	/**
+	 * Injects the hint into the dom.
+	 * @return {Promise<void>}
+	 */
+	async _renderHintMarkup() {
+		const svg = await this._footerSVG;
+		const template = `
+<!-- Codename: Easter Egg -->
+<!-- @todo Fedora should match brand standards. -->
+<!-- - Link 1 -->
+<!-- - Link 2 -->
+		`
+		svg?.insertAdjacentHTML('beforebegin', template);
+	}
+
+	/**
+	 * @return {Promise<HTMLElement | SVGSVGElement | null | undefined>}
+	 */
+	get _footerSVG() {
+		return customElements.whenDefined('rh-global-footer')
+			.then(async () => {
+				const footer = document.querySelector('rh-global-footer');
+				// @ts-ignore
+				await footer.updateComplete;
+				return footer?.shadowRoot?.querySelector('svg');
+			})
+	}
 }
 
 // @ts-ignore
-const easterEgg = new EasterEgg('step1');
+const easterEgg = new EasterEgg();
 // @ts-ignore
 window.easterEgg = easterEgg;

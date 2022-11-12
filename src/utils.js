@@ -1,11 +1,12 @@
 // @ts-check
-
 /**
- * Cancellable promised based countdown timer.
+ * Countdown timer as an observable.
+ *
  * @param {number} timeout - Specified time to resolve the countdown specified in seconds.
+ * @param {?(number) => void} callback - Callback that updates on countdown change.
  * @returns {{ cancel?: (string) => void, promise: Promise<void>}}
  */
-export function countdown(timeout) {
+export function countdown(timeout, callback = null) {
 	const ret = {};
 	const signal = new Promise((res, rej) => {
 		ret.cancel = (err) => {
@@ -18,14 +19,15 @@ export function countdown(timeout) {
 	 */
 	ret.promise = new Promise((res, rej) => {
 		let index = timeout;
-		console.log('Easter Egg Coundown:', index);
 		const interval = setInterval(() => {
 			index--
+			if (!!callback) {
+				callback(index);
+			}
 			if (index <= 0) {
 				res();
 				clearInterval(interval);
 			}
-			console.log('Easter Egg Coundown:', index);
 		}, 1000);
 
 		signal.catch(err => {
@@ -139,7 +141,6 @@ export function pascalCase(string) {
  * @param {string} domain
  */
 export function setVerificationCookie(domain = 'localhost') {
-	console.log(domain);
 	const cname = 'easteregg';
 	const cvalue = 'complete';
 	const days = 30;
@@ -147,4 +148,10 @@ export function setVerificationCookie(domain = 'localhost') {
 	dt.setTime(dt.getTime() + (days * 24 * 60 * 60 * 1000));
 	const expires = "; expires=" + dt.toGMTString();
 	document.cookie = `${cname}=${cvalue}${expires}; domain=${domain}`
+}
+
+export async function shootConfetti() {
+	// @ts-ignore
+	await import('https://unpkg.com/lit-confetti/dist/esm/index.js?module')
+	document.body.insertAdjacentHTML('beforeend', `<lit-confetti gravity="1" count="40"></lit-confetti>`)
 }

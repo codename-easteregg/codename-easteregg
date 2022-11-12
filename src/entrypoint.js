@@ -1,5 +1,5 @@
 // @ts-check
-import { countdown, styleMonitor, animateSVG, pascalCase, footerSVG, setVerificationCookie } from './utils.js';
+import { countdown, styleMonitor, animateSVG, pascalCase, footerSVG, setVerificationCookie, shootConfetti } from './utils.js';
 
 /**
  * @type {Map<string, 'start' | 'reset'>}
@@ -80,7 +80,10 @@ class EasterEgg {
 	}
 
 	_jobsLinkStartCountdown() {
-		this._jobsLinkCountdown = countdown(3);
+		const callback = function (value) {
+			console.log(`Easter Egg Countdown: ${value}`);
+		}
+		this._jobsLinkCountdown = countdown(3, callback);
 		this._jobsLinkCountdown.promise
 			.then(res => {
 				this.nextStep();
@@ -121,10 +124,11 @@ class EasterEgg {
 	/**
 	 * Step 2
 	 */
-	_step2() {
+	async _step2() {
 		console.log('starting step 2');
-		animateSVG('pop');
 		setVerificationCookie(this._cookieDomain);
+		await animateSVG('pop');
+		// shootConfetti();
 	}
 
 	_final() {
@@ -164,6 +168,6 @@ class EasterEgg {
 }
 
 // @ts-ignore
-const easterEgg = new EasterEgg();
+const easterEgg = new EasterEgg('step2');
 // @ts-ignore
 window.easterEgg = easterEgg;

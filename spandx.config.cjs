@@ -16,15 +16,11 @@ async function injectLocalSources(_req, res, next) {
         if (chunk instanceof Buffer) {
           chunk = chunk.toString();
         }
-
         chunk = chunk
           .replace('</head>', `
 <link href="/src/lightdom.css" rel="stylesheet">
 <script type="module" src="/src/entrypoint.js"></script>
 `);
-        // .replace('</body>', `${generateRhFooterTemplate()}</body>`);
-
-        // res.setHeader('Content-Length', chunk.length);
       }
       origWrite.apply(this, [chunk, ...rest]);
     };

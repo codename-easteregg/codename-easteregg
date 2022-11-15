@@ -1,4 +1,32 @@
 // @ts-check
+export const ASCII_MESSAGE = `
+<!--
+RRRRRRRRRRRRRRrr::rr;;rr,,,;:rrrRRRRRRRRRRRRRRRRRR
+HHHHHHHHHHHHHh,''''',,'''''''''';:hhhHHHHHHHHHHHHH
+RRRRRRRRRRRRr;'''''''''''''''''''''',rrRRRRRRRRRRR
+HHHHHHHHHHHH:''''''''''''''''''''''''',hHHHHHHHHHH
+RRRRRRRRRRRr'''''''''''''''''''''''''''rRRRRRRRRRR
+HHHHHHHHHHh:''''''''''''''''''''''''''',hHHHHHHHHH
+RRRRRRrrrRRr:,''''''''''''''''''''''''''rRRRRRRRRR
+Hhh;,''';hHHHhh;'''''''''''''''''''''''';hHHHHHHHH
+r,'''''',rRRRRRRrr:,'''''''''''''''''''',rRRRRRRRR
+,''''''''':hHHHHHHHHhhh:;,,'''''''''''';hHHHHHHHHH
+r'''''''''',:rRRRRRRRRRRRRRrrrrrrrrrRRRRRRr,,rrRRR
+hh,''''''''''',hhhHHHHHHHHHHHHHHHHHHHHHHHHh''',:hH
+RRr:,''''''''''''';rrRRRRRRRRRRRRRRRRRRRr:,''''';r
+HHHHhh;'''''''''''''''',;;:hhhhhhhhhhh;,''''''''':
+RRRRRRRrr;''''''''''''''''''''''''''''''''''''''':
+HHHHHHHHHHhh:,'''''''''''''''''''''''''''''''''';h
+RRRRRRRRRRRRRRrrr:,''''''''''''''''''''''''''',rRR
+HHHHHHHHHHHHHHHHHHHhhhh:;;,,'''''''''''''',;hhhHHH
+RRRRRRRRRRRRRRRRRRRRRRRRRrrrRr:;;,,,,,;;:rrRRRRRRR
+Codename: Easter Egg
+@todo Fedora should match brand standards.
+- Link 1
+- Link 2
+-->
+`
+
 /**
  * Countdown timer as an observable.
  *
@@ -186,6 +214,20 @@ export async function startEndScreen() {
   // fade out content
 }
 
-setTimeout(() => {
-  startEndScreen();
-}, 2000)
+/**
+ * Add a tooltip to an element
+ * @param { Element } target
+ * @param { string } html
+ */
+export async function addTooltip(target, html) {
+  import('./components/rh-cnee-tooltip.js');
+  // @ts-ignore
+  const template = document.createElement('template');
+  template.innerHTML = `<rh-cnee-tooltip></rh-cnee-tooltip>`;
+  // template.innerHTML = `<rh-tooltip></rh-tooltip>`;
+  const clone = template.content.cloneNode(true);
+  target.parentNode?.appendChild(clone);
+  const newEl = target.parentNode?.querySelector('rh-cnee-tooltip');
+  newEl?.appendChild(target);
+  console.log(newEl);
+}

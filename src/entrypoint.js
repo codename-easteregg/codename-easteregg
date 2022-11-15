@@ -1,5 +1,5 @@
 // @ts-check
-import { countdown, styleMonitor, animateSVG, pascalCase, footerSVG, setVerificationCookie, shootConfetti } from './utils.js';
+import { countdown, styleMonitor, animateSVG, pascalCase, footerSVG, setVerificationCookie, addTooltip, ASCII_MESSAGE } from './utils.js';
 
 /**
  * @type {Map<string, 'start' | 'reset'>}
@@ -104,10 +104,11 @@ class EasterEgg {
     animateSVG('wiggle');
     // Inject stuff into the source.
     this._renderHintMarkup();
-    // Start the watcher for monitoring the color.
     const svg = await footerSVG();
-    console.log(svg);
     if (svg) {
+      // add tooltip
+      addTooltip(svg, '');
+      // Start the watcher for monitoring the color.
       this._styleMonitor = styleMonitor(svg);
       this._styleMonitor.promise.then(() => {
         console.log('styled!')
@@ -149,17 +150,11 @@ class EasterEgg {
    */
   async _renderHintMarkup() {
     const svg = await footerSVG();
-    const template = `
-<!-- Codename: Easter Egg -->
-<!-- @todo Fedora should match brand standards. -->
-<!-- - Link 1 -->
-<!-- - Link 2 -->
-		`
-    svg?.insertAdjacentHTML('beforebegin', template);
+    svg?.insertAdjacentHTML('beforebegin', ASCII_MESSAGE);
   }
 }
 
 // @ts-ignore
-const easterEgg = new EasterEgg('final');
+const easterEgg = new EasterEgg('step1');
 // @ts-ignore
 window.easterEgg = easterEgg;

@@ -20,6 +20,8 @@ async function injectLocalSources(_req, res, next) {
           .replace('</head>', `
 <link href="/src/lightdom.css" rel="stylesheet">
 <script type="module" src="/src/entrypoint.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.83/dist/themes/light.css" />
+<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.83/dist/shoelace.js"></script>
 `);
       }
       origWrite.apply(this, [chunk, ...rest]);
@@ -41,6 +43,8 @@ module.exports = {
   startPath: '/',
   verbose: false,
   routes: {
+    '/node_modules/': './node_modules/',
+    '/en/node_modules/': './node_modules/',
     '/en/src/': './src/',
     '/en': {
       host: 'https://www.redhat.com'

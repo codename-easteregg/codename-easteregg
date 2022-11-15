@@ -25,7 +25,7 @@ class RhCneeTooltip extends HTMLElement {
 	constructor() {
 		super();
 		const template = `<sl-tooltip placement="right" trigger="click" distance="16">
-			<div slot="content">Hey there, check out <a href="https://blog.hubspot.com/website/how-to-inspect">the source</a></div>
+			<div slot="content">Inspect <a href="https://blog.hubspot.com/website/how-to-inspect" target="_blank">the source</a> of our open-source way.</div>
 			<slot clicktrap></slot>
 		</sl-tooltip>
 		`;

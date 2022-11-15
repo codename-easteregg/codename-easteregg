@@ -1,5 +1,5 @@
 // @ts-check
-import { countdown, styleMonitor, animateSVG, pascalCase, footerSVG, setVerificationCookie, addTooltip, ASCII_MESSAGE } from './utils.js';
+import { startEndScreen, countdown, styleMonitor, animateSVG, pascalCase, footerSVG, setVerificationCookie, addTooltip, ASCII_MESSAGE } from './utils.js';
 
 /**
  * @type {Map<string, 'start' | 'reset'>}
@@ -80,19 +80,9 @@ class EasterEgg {
   }
 
   _jobsLinkStartCountdown() {
-    const callback = function (value) {
-      console.log(`Easter Egg Countdown: ${value}`);
-    }
-    this._jobsLinkCountdown = countdown(3, callback);
-    this._jobsLinkCountdown.promise
-      .then(res => {
-        this.nextStep();
-      })
-      .catch(err => console.log(err.message));
-  }
-
-  _jobsLinkResetCountdown(e) {
-    this._jobsLinkCountdown?.cancel?.apply(undefined, ['Easter Egg Cancelled!']);
+    // Start the animation for the hat.
+    animateSVG('wiggle');
+    this.nextStep();
   }
 
   /**
@@ -100,14 +90,12 @@ class EasterEgg {
    */
   async _step1() {
     console.log('starting step 1');
-    // Start the animation for the hat.
-    animateSVG('wiggle');
-    // Inject stuff into the source.
-    this._renderHintMarkup();
     const svg = await footerSVG();
     if (svg) {
       // add tooltip
       addTooltip(svg, '');
+      // Inject stuff into the source.
+      this._renderHintMarkup();
       // Start the watcher for monitoring the color.
       this._styleMonitor = styleMonitor(svg);
       this._styleMonitor.promise.then(() => {
@@ -123,9 +111,11 @@ class EasterEgg {
   }
 
   async _final() {
+    await countdown(3).promise;
     console.log('entered final state');
-    await animateSVG('pop');
     setVerificationCookie(this._cookieDomain);
+    await animateSVG('pop');
+    startEndScreen();
   }
 
   /**
@@ -155,6 +145,6 @@ class EasterEgg {
 }
 
 // @ts-ignore
-const easterEgg = new EasterEgg('step1');
+const easterEgg = new EasterEgg();
 // @ts-ignore
 window.easterEgg = easterEgg;

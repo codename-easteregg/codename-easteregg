@@ -1,32 +1,33 @@
 // @ts-check
 export const ASCII_MESSAGE = `
 <!--
-RRRRRRRRRRRRRRrr::rr;;rr,,,;:rrrRRRRRRRRRRRRRRRRRR
-HHHHHHHHHHHHHh,''''',,'''''''''';:hhhHHHHHHHHHHHHH
-RRRRRRRRRRRRr;'''''''''''''''''''''',rrRRRRRRRRRRR
-HHHHHHHHHHHH:''''''''''''''''''''''''',hHHHHHHHHHH
-RRRRRRRRRRRr'''''''''''''''''''''''''''rRRRRRRRRRR
-HHHHHHHHHHh:''''''''''''''''''''''''''',hHHHHHHHHH
-RRRRRRrrrRRr:,''''''''''''''''''''''''''rRRRRRRRRR
-Hhh;,''';hHHHhh;'''''''''''''''''''''''';hHHHHHHHH
-r,'''''',rRRRRRRrr:,'''''''''''''''''''',rRRRRRRRR
-,''''''''':hHHHHHHHHhhh:;,,'''''''''''';hHHHHHHHHH
-r'''''''''',:rRRRRRRRRRRRRRrrrrrrrrrRRRRRRr,,rrRRR
-hh,''''''''''',hhhHHHHHHHHHHHHHHHHHHHHHHHHh''',:hH
-RRr:,''''''''''''';rrRRRRRRRRRRRRRRRRRRRr:,''''';r
-HHHHhh;'''''''''''''''',;;:hhhhhhhhhhh;,''''''''':
-RRRRRRRrr;''''''''''''''''''''''''''''''''''''''':
-HHHHHHHHHHhh:,'''''''''''''''''''''''''''''''''';h
-RRRRRRRRRRRRRRrrr:,''''''''''''''''''''''''''',rRR
-HHHHHHHHHHHHHHHHHHHhhhh:;;,,'''''''''''''',;hhhHHH
-RRRRRRRRRRRRRRRRRRRRRRRRRrrrRr:;;,,,,,;;:rrRRRRRRR
+             .rRRRrr;;rRRRRRRRrr,.                
+            .hHHHHHHHHHHHHHHHHHHhh,.            
+            rRRRRRRRRRRRRRRRRRRRRRRRRRr.          
+           ;HHHHHHHHHHHHHHHHHHHHHHHHHHH.          
+          .RRRRRRRRRRRRRRRRRRRRRRRRRRRRR'         
+          :HHHHHHHHHHHHHHHHHHHHHHHHHHHHHh         
+   .,:rhh'.rRRRRRRRRRRRRRRRRRRRRRRRRRRRRR'        
+.hHHHHHHHh  .hHHHHHHHHHHHHHHHHHHHHHHHHHHHh        
+RRRRRRRRRR,    ,RRRRRRRRRRRRRRRRRRRRRRRRRr        
+HHHHHHHHHHHh.     .;hhHHHHHHHHHHHHHHHHHHh,:r,.    
+RRRRRRRRRRRRRr;.       .',;rhrhhrrrrhh:'  hRRRh.  
+,HHHHHHHHHHHHHHHrr'.                     ,HHHHHHr.
+ .hRRRRRRRRRRRRRRRRRhrr,'...         ..;hRRRRRRRRr
+   .rHHHHHHHHHHHHHHHHHHHHHHHHhrrrrrrhhHHHHHHHHHHHH
+      ,rRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+        .,hrHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHr
+            .,rhRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr.
+                 .,rrrhHHHHHHHHHHHHHHHHHHHHHHhr.  
+                      .';:rhhRRRRRRRRRRRRhr;.     
+
 Traditionally, the word "source" in "open source" referred to the term "source code." Source code is what computer programmers use to create software. Typically source code is invisible to most users.
 
 At Red Hat, we believe that open source way unlocks the world's potential to share knowledge and build upon each other's discoveries.
 
 Unlock your potential by creating your own "red" hat.
 
-Modify the color of the hat in the footer of the site with the officially Red Hat branded red.
+- [ ] Modify the color of the hat in the footer of the site with the officially Red Hat branded red https://ux.redhat.com/foundations/color/#brand.
 -->
 `
 
@@ -233,4 +234,12 @@ export async function addTooltip(target, html) {
   const newEl = target.parentNode?.querySelector('rh-cnee-tooltip');
   newEl?.appendChild(target);
   console.log(newEl);
+}
+
+export function showEndscreenModal() {
+  import('./components/rh-cnee-popup.js');
+  const template = document.createElement('template');
+  template.innerHTML = `<rh-cnee-popup></rh-cnee-popup>`;
+  const clone = template.content.cloneNode(true);
+  document.body.appendChild(clone);
 }

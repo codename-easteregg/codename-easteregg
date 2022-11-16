@@ -1,5 +1,5 @@
 // @ts-check
-import { startEndScreen, countdown, styleMonitor, animateSVG, pascalCase, footerSVG, setVerificationCookie, addTooltip, ASCII_MESSAGE } from './utils.js';
+import { showEndscreenModal, countdown, styleMonitor, animateSVG, footerSVG, setVerificationCookie, addTooltip, ASCII_MESSAGE } from './utils.js';
 
 /**
  * @type {Map<string, 'start' | 'reset'>}
@@ -7,8 +7,6 @@ import { startEndScreen, countdown, styleMonitor, animateSVG, pascalCase, footer
 const HOVER_EVENTS = new Map([
   ['mouseenter', 'start'],
   ['focusin', 'start'],
-  ['focusout', 'reset'],
-  ['mouseleave', 'reset'],
 ]);
 
 /**
@@ -67,22 +65,27 @@ class EasterEgg {
   _init() {
     // add an event listener for hovering jobs.
     this._jobsLink = document.querySelector('[data-analytics-text="Jobs"]');
-    for (const [event, action] of HOVER_EVENTS) {
-      this._jobsLink?.addEventListener(event, this[`_jobsLink${pascalCase(action)}Countdown`].bind(this))
+    if (this._jobsLink) {
+      this._jobsLink.addEventListener('mouseenter', this._jobsLinkStartCountdown.bind(this));
+      this._jobsLink.addEventListener('focusin', this._jobsLinkStartCountdown.bind(this));
     }
   }
 
   _initCleanup() {
     // run cleanup on our event listeners
-    for (const [event, action] of HOVER_EVENTS) {
-      this._jobsLink?.removeEventListener(event, this[`_jobsLink${pascalCase(action)}Countdown`].bind(this))
+    console.log('cleaning up events')
+    if (this._jobsLink) {
+      /**@todo these events aren't being cleaned up */
+      this._jobsLink.removeEventListener('mouseenter', this._jobsLinkStartCountdown.bind(this));
+      this._jobsLink.removeEventListener('focusin', this._jobsLinkStartCountdown.bind(this));
     }
   }
 
   _jobsLinkStartCountdown() {
-    // Start the animation for the hat.
     animateSVG('wiggle');
-    this.nextStep();
+    if (this._state === 'init') {
+      this.nextStep();
+    }
   }
 
   /**
@@ -100,7 +103,9 @@ class EasterEgg {
       this._styleMonitor = styleMonitor(svg);
       this._styleMonitor.promise.then(() => {
         console.log('styled!')
-        this.nextStep();
+        if (this._state === 'step1') {
+          this.nextStep();
+        }
       }).catch(() => { });
     }
   }
@@ -111,11 +116,11 @@ class EasterEgg {
   }
 
   async _final() {
-    await countdown(3).promise;
     console.log('entered final state');
     setVerificationCookie(this._cookieDomain);
     await animateSVG('pop');
-    startEndScreen();
+    await countdown(2).promise;
+    showEndscreenModal();
   }
 
   /**

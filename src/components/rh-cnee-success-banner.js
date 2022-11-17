@@ -7,6 +7,7 @@ styles.replaceSync(css`
 		--_card-width: clamp(100px, 80%, 600px);
 		--_card-spacing: clamp(1rem, 5vw, 50px);
 		--_max-width: var(--_card-width * .7);
+		--_bg-image: ;
 		font-family: var(--rh-font-family-body-text, RedHatText, "Red Hat Text", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans KR", "Noto Sans Malayalam", "Noto Sans SC", "Noto Sans TC", "Noto Sans Thai", Helvetica, Arial, sans-serif);
 		font-weight: var(--rh-font-weight-heading-light, 100);
 		line-height: var(--rh-line-height-body-text, 1.5);
@@ -18,6 +19,9 @@ styles.replaceSync(css`
 		width: auto;
 		color: white;
 		padding: 5vmax;
+		background-image: var(--_bg-image);
+		background-size: contain;
+		background-repeat: no-repeat;
 	}
 
 	[part="base"] {
@@ -31,11 +35,14 @@ styles.replaceSync(css`
 		padding-block-start: 64px;
 	}
 
-	[part="title"] *:is(h1,h2,h3,h4,h5) {
+	[part="title"] {
+		font-size: var(--rh-font-size-heading-xl, 52px);
+	}
+
+	*:is(h1,h2,h3,h4,h5) {
 		font-family: var(--rh-font-family-heading, RedHatDisplay, "Red Hat Display", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans KR", "Noto Sans Malayalam", "Noto Sans SC", "Noto Sans TC", "Noto Sans Thai", Helvetica, Arial, sans-serif);
 		font-weight: var(--rh-font-weight-heading-medium, 500);
 		line-height: var(--rh-line-height-heading, 1.3);
-		font-size: var(--rh-font-size-heading-xl, 52px);
 		margin: 0;
 	}
 
@@ -92,6 +99,40 @@ styles.replaceSync(css`
 		width: 100%;
 	}
 
+	[part="form"] {
+		--_gap: 16px;
+		display: flex;
+		flex-direction: column;
+		gap: var(--_gap);
+		margin-block: 16px;
+	}
+
+	input:not([part="submit"]) {
+		margin-top: calc(var(--_gap) * -1);
+	}
+
+	[part="submit"] {
+		display: block;
+		width: max-content;
+		background: #2a9af3;
+		color: white;
+		border: none;
+		padding: 8px 16px;
+		border-radius: 3px;
+	}
+
+	[part="disclaimer"] {
+		font-size: 13px;
+	}
+
+	a {
+		color: #2a9af3;
+	}
+
+	input {
+		padding-block: 6px;
+	}
+
 	@keyframes badgeBounceIn {
 		0% { transform: translateY(100%); z-index: -1}
 		50% { transform: translateY(-100%); z-index: 2 }
@@ -113,7 +154,24 @@ export class RhCneeSuccessBanner extends HTMLElement {
 				<div part="card">
 					<div part="main">
 						<p class="featured">Your curious nature ahs served you well! It is also clear that you have a finley-tuyned set of problem solving skills. <span class="highlight">Now Let's put those skills to work!</span></p>
-						<img id="placeholder" src="${new URL('../assets/form-screenshot.png', import.meta.url)}"></div>
+						<h3>Claim your badge</h3>
+						<p>It is as easy as sharing your email address. Your email is required to claim your unique, digitally authenticated Red&nbps;Hat Open Hatter badge. The email will procide additional details on how to:</p>
+						<ul>
+							<li>Download your digitally authenticated badge</li>
+							<li>Share this accomplishment on Linkedin</li>
+							<li>Applay the badge to future job application submissions at Red Hat</li>
+							<li>How to practice the Red Hat open source way by contributing to this project</li>
+						</ul>
+						<form part="form">
+							<label>First name</label>
+							<input part="label"/>
+							<label>Last name</label>
+							<input part="label"/>
+							<label>Email address</label>
+							<input part="label" required/>
+							<input part="submit" type="submit" value="Submit" />
+						</form>
+						<div part="disclaimer"><p>We promise we won't use your email for anything other than this purpose. Feel free to checkout our <a href="#">privacy statement</a>.</p></div>
 					</div>
 				</div>
 			</div>
@@ -122,6 +180,7 @@ export class RhCneeSuccessBanner extends HTMLElement {
 		// @ts-ignore
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 		this.shadowRoot.adoptedStyleSheets = [styles]
+		this.style.setProperty('--_bg-image', `url(${new URL('../assets/hero-bg-img@2x.png', import.meta.url)})`)
 	}
 }
 

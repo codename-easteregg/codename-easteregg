@@ -31,19 +31,19 @@ class RhCneeTooltip extends HTMLElement {
 		`;
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = template;
-    /**
-     * Get adopt the document's reset styles
-     * @type {[CSSStyleSheet]}
-     */
-    const resetStyles = [...document.styleSheets]
-      .filter(i => i?.href?.includes('reset.css'))
-      .map(async i => await fetch(i.href).then(res => res.text()))
-      .map(i => {
-        const sheet = new CSSStyleSheet();
-        sheet.replaceSync(i);
-        return sheet;
-      })
-    this.shadowRoot.adoptedStyleSheets = [resetStyles];
+    // /**
+    //  * Get adopt the document's reset styles
+    //  * @type {[CSSStyleSheet]}
+    //  */
+    // const resetStyles = [...document.styleSheets]
+    //   .filter(i => i?.href?.includes('reset.css'))
+    //   .map(async i => await fetch(i.href).then(res => res.text()))
+    //   .map(i => {
+    //     const sheet = new CSSStyleSheet();
+    //     sheet.replaceSync(i);
+    //     return sheet;
+    //   })
+    this.shadowRoot.adoptedStyleSheets = [stylesheet];
     this.addEventListener('click', this._clickHander);
   }
 

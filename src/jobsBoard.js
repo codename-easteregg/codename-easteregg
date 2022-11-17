@@ -12,6 +12,10 @@ styles.replaceSync(css`
 	[data-rh-unique-id="2388201"] {
 		min-height: 200px;
 	}
+
+  rh-cnee-success-banner {
+    transform: translateY(100vh) scale(0);
+  }
 `);
 
 document.adoptedStyleSheets = [styles]

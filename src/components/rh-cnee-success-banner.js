@@ -6,10 +6,11 @@ styles.replaceSync(css`
 		--_badge-size: 200px;
 		--_card-width: clamp(100px, 80%, 600px);
 		--_card-spacing: clamp(1rem, 5vw, 50px);
+		--_max-width: var(--_card-width * .7);
 		font-family: var(--rh-font-family-body-text, RedHatText, "Red Hat Text", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans KR", "Noto Sans Malayalam", "Noto Sans SC", "Noto Sans TC", "Noto Sans Thai", Helvetica, Arial, sans-serif);
 		font-weight: var(--rh-font-weight-heading-light, 100);
 		line-height: var(--rh-line-height-body-text, 1.5);
-		font-size: var(--rh-font-size-body-text-md, 1rem);
+		font-size: var(--rh-font-size-body-text-md, 16px);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -34,7 +35,7 @@ styles.replaceSync(css`
 		font-family: var(--rh-font-family-heading, RedHatDisplay, "Red Hat Display", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans KR", "Noto Sans Malayalam", "Noto Sans SC", "Noto Sans TC", "Noto Sans Thai", Helvetica, Arial, sans-serif);
 		font-weight: var(--rh-font-weight-heading-medium, 500);
 		line-height: var(--rh-line-height-heading, 1.3);
-		font-size: var(--rh-font-size-heading-xl, 2.5rem);
+		font-size: var(--rh-font-size-heading-xl, 52px);
 		margin: 0;
 	}
 
@@ -72,8 +73,14 @@ styles.replaceSync(css`
 		display: block;
 	}
 
+	[part="description"] {
+		font-size: 28px;
+		text-align: center;
+		max-width: calc(var(--_card-width) * .7);
+	}
+
 	.featured {
-		font-size: 1.3rem;
+		font-size: 20px;
 	}
 
 	.highlight {
@@ -99,7 +106,7 @@ export class RhCneeSuccessBanner extends HTMLElement {
 		template.innerHTML = `
 			<div part="base">
 			 	<div part="title"><h2>Excellent job!</h2></div>
-			 	<div part="description">You've earned the Red Hat Open Hatter badge!</div>
+			 	<div part="description">You've earned the <br> Red&nbsp;Hat Open Hatter badge!</div>
 				<div part="badge">
 					${BADGE}
 				</div>

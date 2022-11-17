@@ -117,6 +117,7 @@ export class EasterEgg {
 
 	async _final() {
 		console.log('entered final state');
+		localStorage.setItem('easteregg', 'complete');
 		setVerificationCookie(this._cookieDomain);
 		await animateSVG('pop');
 		await countdown(2).promise;

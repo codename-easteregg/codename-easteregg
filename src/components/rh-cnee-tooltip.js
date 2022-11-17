@@ -22,36 +22,40 @@ stylesheet.replaceSync(`
  * Supports Code name easter egg. Using shoelace components.
  */
 class RhCneeTooltip extends HTMLElement {
-	constructor() {
-		super();
-		const template = `<sl-tooltip placement="right" trigger="click" distance="16">
+  constructor() {
+    super();
+    const template = `<sl-tooltip placement="right" trigger="click" distance="16">
 			<div slot="content">Inspect <a href="https://blog.hubspot.com/website/how-to-inspect" target="_blank">the source</a> of our open-source way.</div>
 			<slot clicktrap></slot>
 		</sl-tooltip>
 		`;
-		this.attachShadow({ mode: "open" });
-		this.shadowRoot.innerHTML = template;
-		// const webrh = [...document.styleSheets]
-		// 	.filter(i => i?.href?.includes('css__'))
-		// 	.map(async i => await fetch(i.href).then(res => res.text()))
-		// 	.map(i => {
-		// 		const sheet = new CSSStyleSheet();
-		// 		sheet.replaceSync(i);
-		// 		return sheet;
-		// 	})
-		this.shadowRoot.adoptedStyleSheets = [stylesheet];
-		this.addEventListener('click', this._clickHander);
-	}
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.innerHTML = template;
+    /**
+     * Get adopt the document's reset styles
+     * @type {[CSSStyleSheet]}
+     */
+    const resetStyles = [...document.styleSheets]
+      .filter(i => i?.href?.includes('reset.css'))
+      .map(async i => await fetch(i.href).then(res => res.text()))
+      .map(i => {
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(i);
+        return sheet;
+      })
+    this.shadowRoot.adoptedStyleSheets = [resetStyles];
+    this.addEventListener('click', this._clickHander);
+  }
 
-	_clickHander(e) {
-		let path = e.composedPath();
-		// split at this parent
-		path = path.slice(0, path.findIndex(i => i === this));
-		const isTrappable = path.some(i => !!i.hasAttribute('clicktrap'));
-		if (isTrappable) {
-			e.preventDefault();
-		}
-	}
+  _clickHander(e) {
+    let path = e.composedPath();
+    // split at this parent
+    path = path.slice(0, path.findIndex(i => i === this));
+    const isTrappable = path.some(i => !!i.hasAttribute('clicktrap'));
+    if (isTrappable) {
+      e.preventDefault();
+    }
+  }
 }
 
 customElements.define('rh-cnee-tooltip', RhCneeTooltip);

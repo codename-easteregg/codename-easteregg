@@ -1,17 +1,24 @@
 // @ts-check
-import { readyStateObservable } from './utils.js';
+// import 'https://unpkg.com/construct-style-sheets-polyfill';
+import { readyStateObservable, css } from './utils.js';
+import './components/rh-cnee-success-banner.js';
 
 export const styles = new CSSStyleSheet();
-styles.replaceSync(`
+styles.replaceSync(css`
 	[data-rh-unique-id="2301221"] {
 		display: none;
 	}
 
-	#success {
-		background: black;
-		: black;
+	[data-rh-unique-id="2388201"] {
+		min-height: 200px;
+	}
+
+	rh-cnee-success-banner {
+		transform: translateY(100%) scale(0);
 	}
 `);
+
+document.adoptedStyleSheets = [styles]
 
 export class JobsBoard {
 	constructor(target = '[data-rh-unique-id="2388201"]') {
@@ -34,19 +41,34 @@ export class JobsBoard {
 			if (['interactive', 'complete'].includes(state)) {
 				this._banner = document.querySelector(this._target);
 			}
-		});
+		}).promise;
+
 		if (this._banner) {
-			this._banner.animate(
-				[
-					{ transform: 'none' },
-					{ transform: 'translateY(100%)' },
-					{ opacity: '0' }
-				],
-				{
-					duration: 1000,
-					fill: 'forwards'
-				});
-			this._banner.innerHTML = `<div id="success"></div>`;
+			const banner = this._banner;
+			const container = this._banner.querySelector('.rh-band-container');
+			const main = this._banner.querySelector('.rh-band-main');
+			// @ts-ignore
+			const mainHeight = getComputedStyle(main).height;
+
+			// Inject the success banner above the content in the banner;
+			const template = document.createElement('template');
+			template.innerHTML = `<rh-cnee-success-banner></rh-cnee-success-banner>`;
+			const successBanner = template.content.cloneNode(true);
+
+			// fade out existing banner to black
+			await Promise.all([
+				banner.animate([{ backgroundColor: 'black', minHeight: '100vh' }], { duration: 1000, fill: 'forwards' }).finished,
+				main.animate([{ transform: 'translateY(100vh)' },], { duration: 2000, fill: 'forwards' }).finished
+			]);
+
+			// Inject new one
+			container?.prepend(successBanner);
+			const newBanner = container?.querySelector('rh-cnee-success-banner');
+			newBanner?.animate([{ transform: 'none' }], { duration: 1000, fill: 'forwards' })
+			// get the size of the new banner
+
+			// await bannerAnimation.finished;
+			// bannerAnimation.reverse();
 		}
 	}
 }

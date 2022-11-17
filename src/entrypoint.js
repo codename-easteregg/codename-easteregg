@@ -1,6 +1,6 @@
 //@ts-check
 import { EasterEgg } from './easterEgg.js';
-import { JobsBoard } from './jobsBoard.js'
+import { JobsBoard } from './jobsBoard.js';
 
 // @ts-ignore
 const easterEgg = new EasterEgg();

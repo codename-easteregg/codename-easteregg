@@ -27,6 +27,7 @@ styles.replaceSync(css`
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
+		padding-block-start: 64px;
 	}
 
 	[part="title"] *:is(h1,h2,h3,h4,h5) {

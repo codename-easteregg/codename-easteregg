@@ -5,7 +5,10 @@
   "main": "entrypoint.js",
   "scripts": {},
   "keywords": [],
-  "author": "",
+  "contributors": [
+    "Michael Potter <mpotter@redhat.com",
+    "Marionne Patel <mapatel@redhat.com",
+  ],
   "license": "ISC",
   "devDependencies": {
     "spandx": "^2.2.5"

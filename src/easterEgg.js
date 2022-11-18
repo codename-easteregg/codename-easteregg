@@ -1,5 +1,5 @@
 // @ts-check
-import { showEndscreenModal, countdown, styleMonitor, animateSVG, footerSVG, setVerificationCookie, addTooltip, ASCII_MESSAGE } from './utils.js';
+import { showEndscreenModal, countdown, styleMonitor, animateSVG, footerSVG, addTooltip, ASCII_MESSAGE } from './utils.js';
 
 /**
  * @type {Map<string, 'start' | 'reset'>}
@@ -118,7 +118,6 @@ export class EasterEgg {
 	async _final() {
 		console.log('entered final state');
 		localStorage.setItem('easteregg', 'complete');
-		setVerificationCookie(this._cookieDomain);
 		await animateSVG('pop');
 		await countdown(2).promise;
 		showEndscreenModal();

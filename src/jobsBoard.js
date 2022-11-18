@@ -21,7 +21,7 @@ styles.replaceSync(css`
 document.adoptedStyleSheets = [styles]
 
 export class JobsBoard {
-  constructor(target = '[data-rh-unique-id="2388201"]') {
+  constructor(target = '[data-rh-unique-id="2388201"]', initDelay = 1000) {
     if (localStorage.getItem('easteregg') === 'complete') {
       /**
        * @type {string} Target
@@ -31,6 +31,7 @@ export class JobsBoard {
        * @type {Element | null | undefined} Banner
        */
       this._banner;
+      this._initDelay = initDelay;
       this._init();
     }
   }
@@ -42,7 +43,8 @@ export class JobsBoard {
       if (['interactive', 'complete'].includes(state)) {
         this._banner = document.querySelector(this._target);
       }
-    }).promise;
+    }).promise
+      .then(() => new Promise(res => setTimeout(res, this._initDelay)));
 
     if (this._banner) {
       const banner = this._banner;

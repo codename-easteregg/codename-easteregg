@@ -242,7 +242,6 @@ export async function addTooltip(target, html) {
   target.parentNode?.appendChild(clone);
   const newEl = target.parentNode?.querySelector('rh-cnee-tooltip');
   newEl?.appendChild(target);
-  console.log(newEl);
 }
 
 export function showEndscreenModal() {
@@ -276,7 +275,6 @@ export function readyStateObservable(callback = null) {
 
     signal.then(state => {
       document.removeEventListener('readystatechange', evaluate);
-      console.log(res);
       res(state);
     })
   });

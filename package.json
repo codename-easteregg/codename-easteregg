@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "entrypoint.js",
-  "scripts": {},
+  "scripts": {
+    "start": "spandx -c spandx.config.cjs"
+  },
   "keywords": [],
   "contributors": [
     "Michael Potter <mpotter@redhat.com",
-    "Marionne Patel <mapatel@redhat.com",
+    "Marionne Patel <mapatel@redhat.com"
   ],
   "license": "ISC",
   "devDependencies": {

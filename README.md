@@ -17,5 +17,5 @@ npm install
 ## Start
 
 ```bash
-spandx -c spandx.config.cjs
+npm run start
 ```

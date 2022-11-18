@@ -6,7 +6,8 @@
   "scripts": {},
   "keywords": [],
   "contributors": [
-    "Michael Potter <mpotter@redhat.com"
+    "Michael Potter <mpotter@redhat.com",
+    "Marionne Patel <mapatel@redhat.com",
   ],
   "license": "ISC",
   "devDependencies": {

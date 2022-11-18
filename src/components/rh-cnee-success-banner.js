@@ -141,10 +141,10 @@ styles.replaceSync(css`
 `);
 
 export class RhCneeSuccessBanner extends HTMLElement {
-	constructor() {
-		super();
-		const template = document.createElement('template');
-		template.innerHTML = `
+  constructor() {
+    super();
+    const template = document.createElement('template');
+    template.innerHTML = `
 			<div part="base">
 			 	<div part="title"><h2>Excellent job!</h2></div>
 			 	<div part="description">You've earned the <br> Red&nbsp;Hat Open Hatter badge!</div>
@@ -153,14 +153,14 @@ export class RhCneeSuccessBanner extends HTMLElement {
 				</div>
 				<div part="card">
 					<div part="main">
-						<p class="featured">Your curious nature ahs served you well! It is also clear that you have a finley-tuyned set of problem solving skills. <span class="highlight">Now Let's put those skills to work!</span></p>
+						<p class="featured">Your curious nature has served you well! It is also clear that you have a finley-tuned set of problem solving skills. <span class="highlight">Now let's put those skills to work!</span></p>
 						<h3>Claim your badge</h3>
-						<p>It is as easy as sharing your email address. Your email is required to claim your unique, digitally authenticated Red&nbps;Hat Open Hatter badge. The email will procide additional details on how to:</p>
+						<p>It is as easy as sharing your email address. Your email is required to claim your unique, digitally authenticated Red&nbps;Hat Open Hatter badge. The email will provide additional details on how to:</p>
 						<ul>
 							<li>Download your digitally authenticated badge</li>
 							<li>Share this accomplishment on Linkedin</li>
-							<li>Applay the badge to future job application submissions at Red Hat</li>
-							<li>How to practice the Red Hat open source way by contributing to this project</li>
+							<li>Apply the badge to future job application submissions at Red Hat</li>
+							<li>How to practice the Red Hat open source way by contributing to this project.</li>
 						</ul>
 						<form part="form">
 							<label>First name</label>
@@ -176,12 +176,12 @@ export class RhCneeSuccessBanner extends HTMLElement {
 				</div>
 			</div>
 		`;
-		this.attachShadow({ mode: "open" });
-		// @ts-ignore
-		this.shadowRoot.appendChild(template.content.cloneNode(true));
-		this.shadowRoot.adoptedStyleSheets = [styles]
-		this.style.setProperty('--_bg-image', `url(${new URL('../assets/hero-bg-img@2x.png', import.meta.url)})`)
-	}
+    this.attachShadow({ mode: "open" });
+    // @ts-ignore
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.adoptedStyleSheets = [styles]
+    this.style.setProperty('--_bg-image', `url(${new URL('../assets/hero-bg-img@2x.png', import.meta.url)})`)
+  }
 }
 
 customElements.define('rh-cnee-success-banner', RhCneeSuccessBanner);

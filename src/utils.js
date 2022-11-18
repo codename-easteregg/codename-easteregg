@@ -34,7 +34,9 @@ At Red Hat, we believe that open source way unlocks the world's potential to sha
 
 Unlock your potential by creating your own "red" hat.
 
-- [ ] Modify the color of the hat in the footer of the site with the officially Red Hat branded red https://ux.redhat.com/foundations/color/#brand.
+- [ ] Modify the color of the hat in the footer of the site with the officially Red Hat branded red.
+ - https://ux.redhat.com/foundations/color/#brand
+ - https://www.digitalocean.com/community/tutorials/devtools-color-picker
 -->
 `
 

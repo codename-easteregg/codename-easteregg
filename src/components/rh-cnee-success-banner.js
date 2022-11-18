@@ -147,7 +147,7 @@ export class RhCneeSuccessBanner extends HTMLElement {
     template.innerHTML = `
 			<div part="base">
 			 	<div part="title"><h2>Excellent job!</h2></div>
-			 	<div part="description">You've earned the <br> Red&nbsp;Hat Open Hatter badge!</div>
+			 	<div part="description">You've earned the <br> Red Hat Open Hatter badge!</div>
 				<div part="badge">
 					${BADGE}
 				</div>
@@ -155,7 +155,7 @@ export class RhCneeSuccessBanner extends HTMLElement {
 					<div part="main">
 						<p class="featured">Your curious nature has served you well! It is also clear that you have a finley-tuned set of problem solving skills. <span class="highlight">Now let's put those skills to work!</span></p>
 						<h3>Claim your badge</h3>
-						<p>It is as easy as sharing your email address. Your email is required to claim your unique, digitally authenticated Red&nbps;Hat Open Hatter badge. The email will provide additional details on how to:</p>
+						<p>It is as easy as sharing your email address. Your email is required to claim your unique, digitally authenticated Red Hat Open Hatter badge. The email will provide additional details on how to:</p>
 						<ul>
 							<li>Download your digitally authenticated badge</li>
 							<li>Share this accomplishment on Linkedin</li>
